@@ -96,14 +96,32 @@ extension TravelLocationsMapVC: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("tapped on pin ")
+//        print("tapped on pin ")
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            if let doSomething = view.annotation?.title! {
-                print("do something")
+            if let photoAlbumVC = view.annotation?.title! {
+                
+            let vc = storyboard?.instantiateViewController(identifier: "PhotoAlbumVC") as! PhotoAlbumVC
+            let locationLat = view.annotation?.coordinate.latitude
+            let locationLon = view.annotation?.coordinate.longitude
+            let myCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: locationLat!, longitude: locationLon!)
+            let selectedPin: MKPointAnnotation = MKPointAnnotation()
+            selectedPin.coordinate = myCoordinate
+
+            for pin in annotations {
+                if pin.latitude == selectedPin.coordinate.latitude &&
+                    pin.longitude == selectedPin.coordinate.longitude {
+                    vc.pin = pin
+                }
+                vc.currentLatitude = pin.latitude
+                vc.currentLongitude = pin.longitude
+            }
+                navigationController?.pushViewController(vc, animated: true)
             }
         }
     }
+    
+    
 }

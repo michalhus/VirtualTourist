@@ -17,6 +17,7 @@
 		E376D983243F9C4B0016FB1E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E376D981243F9C4B0016FB1E /* LaunchScreen.storyboard */; };
 		E3AB64782464514B000ED9E9 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AB64772464514B000ED9E9 /* Client.swift */; };
 		E3B7EE81244A3A980083CFCF /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7EE80244A3A980083CFCF /* DataController.swift */; };
+		E3CA420D2469A02300C1588B /* PhotoAlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CA420C2469A02300C1588B /* PhotoAlbumVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		E376D984243F9C4B0016FB1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3AB64772464514B000ED9E9 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		E3B7EE80244A3A980083CFCF /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		E3CA420C2469A02300C1588B /* PhotoAlbumVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				E376D977243F9C4B0016FB1E /* TravelLocationsMapVC.swift */,
+				E3CA420C2469A02300C1588B /* PhotoAlbumVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 			files = (
 				E3B7EE81244A3A980083CFCF /* DataController.swift in Sources */,
 				E376D97E243F9C4B0016FB1E /* VirtualTourist.xcdatamodeld in Sources */,
+				E3CA420D2469A02300C1588B /* PhotoAlbumVC.swift in Sources */,
 				E318791824647C5400D4F98E /* LocationPictures.swift in Sources */,
 				E3AB64782464514B000ED9E9 /* Client.swift in Sources */,
 				E376D978243F9C4B0016FB1E /* TravelLocationsMapVC.swift in Sources */,

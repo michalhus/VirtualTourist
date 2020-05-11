@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct searchLocationPictures: Codable {
+struct searchLocationPicture: Codable {
     let id : String
     let server: String
     let farm: String
