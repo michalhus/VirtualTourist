@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E318791824647C5400D4F98E /* LocationPictures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E318791724647C5300D4F98E /* LocationPictures.swift */; };
 		E376D974243F9C4B0016FB1E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E376D973243F9C4B0016FB1E /* AppDelegate.swift */; };
 		E376D976243F9C4B0016FB1E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E376D975243F9C4B0016FB1E /* SceneDelegate.swift */; };
 		E376D978243F9C4B0016FB1E /* TravelLocationsMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E376D977243F9C4B0016FB1E /* TravelLocationsMapVC.swift */; };
@@ -14,10 +15,12 @@
 		E376D97E243F9C4B0016FB1E /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E376D97C243F9C4B0016FB1E /* VirtualTourist.xcdatamodeld */; };
 		E376D980243F9C4B0016FB1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E376D97F243F9C4B0016FB1E /* Assets.xcassets */; };
 		E376D983243F9C4B0016FB1E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E376D981243F9C4B0016FB1E /* LaunchScreen.storyboard */; };
+		E3AB64782464514B000ED9E9 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AB64772464514B000ED9E9 /* Client.swift */; };
 		E3B7EE81244A3A980083CFCF /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7EE80244A3A980083CFCF /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E318791724647C5300D4F98E /* LocationPictures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPictures.swift; sourceTree = "<group>"; };
 		E376D970243F9C4B0016FB1E /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E376D973243F9C4B0016FB1E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E376D975243F9C4B0016FB1E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,6 +30,7 @@
 		E376D97F243F9C4B0016FB1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E376D982243F9C4B0016FB1E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E376D984243F9C4B0016FB1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3AB64772464514B000ED9E9 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		E3B7EE80244A3A980083CFCF /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,9 +82,19 @@
 			path = VirtualTourist;
 			sourceTree = "<group>";
 		};
+		E3AB647924645184000ED9E9 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				E3AB64772464514B000ED9E9 /* Client.swift */,
+				E318791724647C5300D4F98E /* LocationPictures.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		E3B7EE7F244A3A820083CFCF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E3AB647924645184000ED9E9 /* Networking */,
 				E376D97C243F9C4B0016FB1E /* VirtualTourist.xcdatamodeld */,
 				E3B7EE80244A3A980083CFCF /* DataController.swift */,
 			);
@@ -170,6 +184,8 @@
 			files = (
 				E3B7EE81244A3A980083CFCF /* DataController.swift in Sources */,
 				E376D97E243F9C4B0016FB1E /* VirtualTourist.xcdatamodeld in Sources */,
+				E318791824647C5400D4F98E /* LocationPictures.swift in Sources */,
+				E3AB64782464514B000ED9E9 /* Client.swift in Sources */,
 				E376D978243F9C4B0016FB1E /* TravelLocationsMapVC.swift in Sources */,
 				E376D974243F9C4B0016FB1E /* AppDelegate.swift in Sources */,
 				E376D976243F9C4B0016FB1E /* SceneDelegate.swift in Sources */,
