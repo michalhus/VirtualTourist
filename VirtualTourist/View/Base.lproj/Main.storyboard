@@ -106,6 +106,9 @@
                                     <constraint firstAttribute="height" constant="35" id="y0v-cs-HdN"/>
                                 </constraints>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="newPhotoCollection:" destination="Bic-sM-QTN" eventType="touchUpInside" id="BU4-dR-Toi"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -124,7 +127,7 @@
                         <viewLayoutGuide key="safeArea" id="2eh-70-OQf"/>
                     </view>
                     <connections>
-                        <outlet property="newCollectionButton" destination="Uic-d5-Hba" id="b6M-f7-cF1"/>
+                        <outlet property="mapView" destination="yKv-zf-PoM" id="Z9C-s2-Mlr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lZy-0H-yiX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

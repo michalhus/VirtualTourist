@@ -1,5 +1,5 @@
 //
-//  x.swift
+//  PhotoAlbumVC.swift
 //  VirtualTourist
 //
 //  Created by Michal Hus on 5/11/20.
@@ -11,9 +11,9 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
+class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate, MKMapViewDelegate {
     
-    @IBOutlet weak var newCollectionButton: UIButton!
+    @IBOutlet weak var mapView: MKMapView!
     
     var currentLatitude: Double?
     var currentLongitude: Double?
@@ -22,56 +22,22 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     var searchResultPhotos: [searchLocationPicture] = []
     let numberOfColumns: CGFloat = 3
     var fetchedResultsController: NSFetchedResultsController<Photo>!
-}
-
-
-extension TravelLocationsMapVC: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard annotation is MKPointAnnotation else { print("no mkpointannotaions"); return nil }
+    @IBAction func newPhotoCollection(_ sender: Any) {
+        print("WIP - call to API happens and new photos are showns that overwrite old photo array collection")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = self
         
-        let reuseId = "pin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
-            pinView!.rightCalloutAccessoryView = UIButton(type: .infoDark)
-            pinView!.pinTintColor = UIColor.black
+        let selectedPin = MKPointAnnotation()
+        if let lat = CLLocationDegrees(exactly: pin.latitude), let lon = CLLocationDegrees(exactly: pin.longitude) {
+            let coordinateLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+            selectedPin.coordinate = coordinateLocation
         }
-        else {
-            pinView!.annotation = annotation
-        }
-        return pinView
+        mapView.addAnnotation(selectedPin)
     }
-    
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//        print("tapped on pin ")
-    }
-    
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
-            if let photoAlbumVC = view.annotation?.title! {
-                
-            let vc = storyboard?.instantiateViewController(identifier: "PhotoAlbumVC") as! PhotoAlbumVC
-            let locationLat = view.annotation?.coordinate.latitude
-            let locationLon = view.annotation?.coordinate.longitude
-            let myCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: locationLat!, longitude: locationLon!)
-            let selectedPin: MKPointAnnotation = MKPointAnnotation()
-            selectedPin.coordinate = myCoordinate
-            
-            for pin in annotations {
-                if pin.latitude == selectedPin.coordinate.latitude &&
-                    pin.longitude == selectedPin.coordinate.longitude {
-                    vc.pin = pin
-                }
-                vc.currentLatitude = pin.latitude
-                vc.currentLongitude = pin.longitude
-            }
-                navigationController?.pushViewController(vc, animated: true)
-            }
-        }
-    }
-    
+
     
 }
