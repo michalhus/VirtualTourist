@@ -16,7 +16,7 @@ class TravelLocationsMapVC: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var mapView: MKMapView!
     
     var annotations = [Pin]()
-    var pins = [MKPointAnnotation]()
+//    var pins = [MKPointAnnotation]()
     var fetchedResultsController: NSFetchedResultsController<Pin>!
     var latitude: Double?
     var longitude: Double?
@@ -34,7 +34,7 @@ class TravelLocationsMapVC: UIViewController, NSFetchedResultsControllerDelegate
                     let coordinateLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
                     savedPin.coordinate = coordinateLocation
                     savedPin.title = "Photos"
-                    pins.append(savedPin)
+//                    pins.append(savedPin)
                 }
                 mapView.addAnnotation(savedPin)
             }
