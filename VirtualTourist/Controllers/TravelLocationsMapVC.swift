@@ -16,7 +16,6 @@ class TravelLocationsMapVC: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var mapView: MKMapView!
     
     var annotations = [Pin]()
-//    var pins = [MKPointAnnotation]()
     var fetchedResultsController: NSFetchedResultsController<Pin>!
     var latitude: Double?
     var longitude: Double?
@@ -26,15 +25,14 @@ class TravelLocationsMapVC: UIViewController, NSFetchedResultsControllerDelegate
         let sortDescriptor = NSSortDescriptor(key: "createdDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        if let result = try? DataController.shared.viewContext.fetch(fetchRequest) {
-            annotations = result
-            for annotation in annotations {
+        //This retrive or fetches an Array of enteties in this case type of Pin so [Pin]
+        if let results = try? DataController.shared.viewContext.fetch(fetchRequest) {
+            for result in results {
                 let savedPin = MKPointAnnotation()
-                if let lat = CLLocationDegrees(exactly: annotation.latitude), let lon = CLLocationDegrees(exactly: annotation.longitude) {
+                if let lat = CLLocationDegrees(exactly: result.latitude), let lon = CLLocationDegrees(exactly: result.longitude) {
                     let coordinateLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
                     savedPin.coordinate = coordinateLocation
                     savedPin.title = "Photos"
-//                    pins.append(savedPin)
                 }
                 mapView.addAnnotation(savedPin)
             }
