@@ -19,6 +19,7 @@
 		E3AB64782464514B000ED9E9 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AB64772464514B000ED9E9 /* Client.swift */; };
 		E3B7EE81244A3A980083CFCF /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7EE80244A3A980083CFCF /* DataController.swift */; };
 		E3CA420D2469A02300C1588B /* PhotoAlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CA420C2469A02300C1588B /* PhotoAlbumVC.swift */; };
+		E3CDBD29246D951F008B95C9 /* TravelLocationsMapVC+MapKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDBD28246D951F008B95C9 /* TravelLocationsMapVC+MapKitExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		E3AB64772464514B000ED9E9 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		E3B7EE80244A3A980083CFCF /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		E3CA420C2469A02300C1588B /* PhotoAlbumVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumVC.swift; sourceTree = "<group>"; };
+		E3CDBD28246D951F008B95C9 /* TravelLocationsMapVC+MapKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TravelLocationsMapVC+MapKitExtension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +54,7 @@
 		E3558ACC244DD96300591A0F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E376D977243F9C4B0016FB1E /* TravelLocationsMapVC.swift */,
+				E3CDBD2A246D96BA008B95C9 /* TravelLocationsMap */,
 				E3CA420C2469A02300C1588B /* PhotoAlbumVC.swift */,
 			);
 			path = Controllers;
@@ -115,6 +117,15 @@
 				E3FA4565246C35C90040B1ED /* Cell */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		E3CDBD2A246D96BA008B95C9 /* TravelLocationsMap */ = {
+			isa = PBXGroup;
+			children = (
+				E376D977243F9C4B0016FB1E /* TravelLocationsMapVC.swift */,
+				E3CDBD28246D951F008B95C9 /* TravelLocationsMapVC+MapKitExtension.swift */,
+			);
+			path = TravelLocationsMap;
 			sourceTree = "<group>";
 		};
 		E3FA4565246C35C90040B1ED /* Cell */ = {
@@ -197,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3B7EE81244A3A980083CFCF /* DataController.swift in Sources */,
+				E3CDBD29246D951F008B95C9 /* TravelLocationsMapVC+MapKitExtension.swift in Sources */,
 				E376D97E243F9C4B0016FB1E /* VirtualTourist.xcdatamodeld in Sources */,
 				E315B8D8246B3A2F0085D222 /* PhotosCollectionViewCell.swift in Sources */,
 				E3CA420D2469A02300C1588B /* PhotoAlbumVC.swift in Sources */,
