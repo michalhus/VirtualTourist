@@ -32,19 +32,20 @@ class Client {
         let noCallBackQuery = URLQueryItem(name: "nojsoncallback", value: "1")
         let latitudeQuery = URLQueryItem(name: "lat", value: String(latitude))
         let longitudeQuery = URLQueryItem(name: "lon", value: String(longitude))
-        //        let pageQuery = URLQueryItem(name: "page", value: String(page))
         
         components.queryItems = [endpointQuery, apiKeyQuery, latitudeQuery, longitudeQuery, formatQuery, radiusQuery, noCallBackQuery]
         
         components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
         let request = URLRequest(url: components.url!)
         
-        _ = URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data,                            // is there data
                 let response = response as? HTTPURLResponse,  // is there HTTP response
                 (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
                 error == nil else {                           // was there no error, otherwise ...
-                    completion(nil, error?.localizedDescription)
+                    DispatchQueue.main.async {
+                        completion(nil, error?.localizedDescription)
+                    }
                     return
             }
             
@@ -57,43 +58,4 @@ class Client {
             }
         }.resume()
     }
-    
-    
-        
-        
-        
-//        URLSession.shared.dataTask(with: URL(string: photo.imageURL!)!) { (data, response, error) in
-//
-//            if error == nil {
-//                DispatchQueue.main.async {
-//                    self.photoImage.image = UIImage(data: data! as Data)
-//                    self.saveImageDataToCoreData(photo, imageData: data! as Data)
-//                }
-//            }
-//        }
-//        .resume()
-
-//        let downloadTask = URLSession.shared.downloadTask(with: request) {
-//            urlOrNil, responseOrNil, errorOrNil in
-//            // check for and handle errors:
-//            // * errorOrNil should be nil
-//            // * responseOrNil should be an HTTPURLResponse with statusCode in 200..<299
-//
-//            guard let fileURL = urlOrNil else { return }
-//            do {
-//                let documentsURL = try
-//                    FileManager.default.url(for: .documentDirectory,
-//                                            in: .userDomainMask,
-//                                            appropriateFor: nil,
-//                                            create: false)
-//                let savedURL = documentsURL.appendingPathComponent(fileURL.lastPathComponent)
-//                try FileManager.default.moveItem(at: fileURL, to: savedURL)
-////                coreDataPhotoEntity.imageData =
-//
-//            } catch {
-//                print ("file error: \(error)")
-//            }
-//        }
-//        downloadTask.resume()
-//    }
 }

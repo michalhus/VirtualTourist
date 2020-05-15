@@ -17,15 +17,17 @@ class TravelLocationsMapVC: UIViewController, NSFetchedResultsControllerDelegate
     var fetchedResultsController: NSFetchedResultsController<Pin>!
     var latitude: Double?
     var longitude: Double?
+    var pins = [Pin]()
     
     fileprivate func setupFetchedResultsController() {
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "createdDate", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "lastModified", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         // MARK: CORE DATA Fetch
         // This retrive or fetches an Array of enteties in this case type of Pin so [Pin]
         if let results = try? DataController.shared.viewContext.fetch(fetchRequest) {
+            pins = results
             for result in results {
                 // Define new MapKit Annotation obj to populate its info form CoreData and to display it on the Map
                 let pinAnnotation = MKPointAnnotation()
@@ -71,7 +73,8 @@ class TravelLocationsMapVC: UIViewController, NSFetchedResultsControllerDelegate
         
         pin.latitude = Double(annotation.coordinate.latitude)
         pin.longitude = Double(annotation.coordinate.longitude)
-        pin.createdDate = Date()
+        pin.lastModified = Date()
         DataController.shared.saveContext()
+        pins.append(pin)
     }
 }

@@ -34,6 +34,14 @@ extension TravelLocationsMapVC: MKMapViewDelegate {
         let selectedPinCoordinates = view.annotation?.coordinate
         selectedPin.coordinate = selectedPinCoordinates!
         vc.selectedPin = selectedPin
+        for pin in pins {
+            if pin.latitude == selectedPin.coordinate.latitude
+            && pin.longitude == selectedPin.coordinate.longitude {
+                pin.lastModified = Date()
+                vc.selectedPinCoreData = pin
+                break
+            }
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
 }
