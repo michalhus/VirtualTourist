@@ -13,28 +13,61 @@ import CoreData
 
 class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     
-    @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var collectionView: UICollectionView!
+    // MARK: Properties
     
     var selectedPin = MKPointAnnotation()
     var selectedPinCoreData: Pin!
     var savedPhotoObjects = [Photo]()
-
-    let numberOfColumns: CGFloat = 3
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     
+    var cellViewSize: CGFloat = 0
+    var imageSize: CGSize = CGSize(width: 0, height: 0)
+    private let itemsPerRow: CGFloat = 3
+    private let sectionInsets = UIEdgeInsets(top: 50.0,
+                                             left: 20.0,
+                                             bottom: 50.0,
+                                             right: 20.0)
+    
+    // MARK: Outlets
+    
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var collectionView: UICollectionView!
+
+    // MARK: Outlets' Actions
+
     @IBAction func newPhotoCollection(_ sender: Any) {
-//        clearOldCollection
-//        get new items
-        getLocationRandomPhotos()
+//        deleteAllData()
+        print("New Collection button pressed, need to clear data and get new one")
     }
     
+    // MARK: Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        mapView.addAnnotation(selectedPin)
+                
+        if let picFromCoreData = reloadSavedData() {
+            savedPhotoObjects = picFromCoreData
+            savedPhotoObjects.isEmpty ? getLocationRandomPhotos() : self.collectionView.reloadData()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
+    
+    // MARK: Core Data Fetching
+
     fileprivate func reloadSavedData() -> [Photo]? {
         var photos: [Photo] = []
             let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
             let predicate = NSPredicate(format: "pin == %@", argumentArray: [selectedPinCoreData!])
             fetchRequest.predicate = predicate
-            let sortDescriptor = NSSortDescriptor(key: "imageURL", ascending: true)
+            let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptor]
             
             fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -55,24 +88,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        mapView.delegate = self
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        mapView.addAnnotation(selectedPin)
-        
-        if reloadSavedData()!.isEmpty {
-            getLocationRandomPhotos()
-        } else {
-            savedPhotoObjects = reloadSavedData()!
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        collectionView!.reloadData()
-    }
+    // MARK: Fetching API Responses
     
     func getLocationRandomPhotos() {
         _ = Client.shared.getLocationPhotos(latitude: selectedPin.coordinate.latitude, longitude: selectedPin.coordinate.longitude, completion: { (photos, error) in
@@ -81,46 +97,30 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
                 for photo in photos {
                     let photoCoreData = Photo(context: DataController.shared.viewContext)
                     photoCoreData.imageURL = "https://farm\(String(describing: photo.farm)).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret).jpg"
+                    photoCoreData.creationDate = Date()
                     photoCoreData.pin = self.selectedPinCoreData
-                    self.downloadImage(from: photoCoreData)
+                    self.savedPhotoObjects.append(photoCoreData)
                     DataController.shared.saveContext()
                 }
             }
+            self.collectionView.reloadData()
         })
     }
-        
-    func getData(from photo: Photo, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        if let urlString = photo.imageURL, let url = URL(string: urlString) {
-            URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-        }
-    }
+
+//    func deleteAllData() {
+//
+//        for photo in savedPhotoObjects {
+//            DataController.shared.viewContext.delete(photo)
+//        }
+//        savedPhotoObjects.removeAll()
+//    }
     
-    func downloadImage(from photo: Photo) {
-        getData(from: photo) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() { [weak self] in
-                photo.imageData = data
-                DataController.shared.saveContext()
-                self?.savedPhotoObjects.append(photo)
-                self?.collectionView.reloadData()
-            }
-        }
-    }
 }
 
+// MARK: Collection View Data Source Extention
 
-
-
-
-
-
-
-
-
-
-
-extension PhotoAlbumVC : UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    // MARK: Collection View Data Source
+extension PhotoAlbumVC : UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.savedPhotoObjects.count
     }
@@ -129,12 +129,43 @@ extension PhotoAlbumVC : UICollectionViewDelegateFlowLayout, UICollectionViewDat
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo Collection View Cell", for: indexPath) as! PhotoCollectionViewCell
         let savedPhoto = self.savedPhotoObjects[(indexPath as NSIndexPath).row]
-        
-        // Set image
-        cell.imageCell.image = UIImage(data: savedPhoto.imageData!)
+        cell.downloadImage(from: URL(string: savedPhoto.imageURL ?? "")!)
+
         return cell
     }
 }
+
+// MARK: Collection View FlowLayout Extention
+
+extension PhotoAlbumVC : UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let flowayout = collectionViewLayout as? UICollectionViewFlowLayout
+        let space: CGFloat = (flowayout?.minimumInteritemSpacing ?? 0.0) + self.sectionInsets.left + self.sectionInsets.right + 30.0
+        cellViewSize = (collectionView.frame.size.width - space) / itemsPerRow
+        imageSize = CGSize(width: cellViewSize, height: cellViewSize)
+        return imageSize
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+}
+
+// MARK: MapKit Extention
 
 extension PhotoAlbumVC: MKMapViewDelegate {
     
@@ -155,26 +186,3 @@ extension PhotoAlbumVC: MKMapViewDelegate {
         return pinView
     }
 }
-
-
-
-//        @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
-   
-   
-   // MARK: Life Cycle
-   //        override func viewDidLoad() {
-   //            super.viewDidLoad()
-   //
-   //            let space:CGFloat = 3.0
-   //            let dimension = (view.frame.size.width - (2 * space)) / 3.0
-   //
-   //            flowLayout.minimumInteritemSpacing = space
-   //            flowLayout.minimumLineSpacing = space
-   //            flowLayout.itemSize = CGSize(width: dimension, height: dimension)
-   //        }
-   
-   //        override func viewWillAppear(_ animated: Bool) {
-   //            super.viewWillAppear(animated)
-   //            self.tabBarController?.tabBar.isHidden = false
-   //            collectionView!.reloadData()
-   //        }
