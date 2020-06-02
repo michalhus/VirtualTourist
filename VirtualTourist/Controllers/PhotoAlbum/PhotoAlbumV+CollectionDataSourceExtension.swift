@@ -20,6 +20,8 @@ extension PhotoAlbumVC : UICollectionViewDataSource {
         cell.buttonStateDelegate = self
 
         let savedPhoto = self.savedPhotoObjects[(indexPath as NSIndexPath).row]
+
+        cell.isLoading(true)
         if let imageURL = savedPhoto.imageURL, let url = URL(string: imageURL) {
             cell.downloadImage(from: url, size: imageSize)
         }

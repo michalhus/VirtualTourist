@@ -20,6 +20,27 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     var isImageLoaded: Bool = false
     
+    var loadingIndicator = UIActivityIndicatorView()
+
+    func activityIndicator() {
+        loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.center = self.imageCell.center
+        self.imageCell.addSubview(loadingIndicator)
+    }
+    
+    func isLoading(_ indicator: Bool) {
+
+        if indicator {
+            self.activityIndicator()
+            loadingIndicator.startAnimating()
+            loadingIndicator.backgroundColor = .white
+        } else {
+            loadingIndicator.stopAnimating()
+            loadingIndicator.hidesWhenStopped = true
+        }
+    }
+    
     func downloadImage(from url: URL, size: CGSize) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
@@ -40,6 +61,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
+        self.isLoading(false)
         self.imageCell.image = scaledImage
         self.buttonStateDelegate?.buttonState(state: true)
 
