@@ -12,6 +12,15 @@ import UIKit
 class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageCell: UIImageView!
     
+    func isLoading(_ indicator: Bool) {
+
+        if indicator {
+            print("Laoding Indicator")
+        } else {
+            print("Image Loaded")
+        }
+    }
+    
     func downloadImage(from url: URL, size: CGSize) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
@@ -32,6 +41,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
+        self.isLoading(false)
         self.imageCell.image = scaledImage
     }
 }

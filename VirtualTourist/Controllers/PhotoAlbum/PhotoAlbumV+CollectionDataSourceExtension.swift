@@ -18,6 +18,7 @@ extension PhotoAlbumVC : UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo Collection View Cell", for: indexPath) as! PhotoCollectionViewCell
         let savedPhoto = self.savedPhotoObjects[(indexPath as NSIndexPath).row]
+        cell.isLoading(true)
         cell.downloadImage(from: URL(string: savedPhoto.imageURL ?? "")!, size: imageSize)
 
         return cell
