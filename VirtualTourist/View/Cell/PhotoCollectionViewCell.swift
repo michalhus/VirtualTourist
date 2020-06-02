@@ -9,9 +9,16 @@
 import Foundation
 import UIKit
 
+protocol NewCollectionStateDelegate: class {
+    func buttonState(state: Bool)
+}
+
 class PhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageCell: UIImageView!
+    weak var buttonStateDelegate: NewCollectionStateDelegate?
+    
+    var isImageLoaded: Bool = false
     
     var loadingIndicator = UIActivityIndicatorView()
 
@@ -37,9 +44,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     func downloadImage(from url: URL, size: CGSize) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() { [weak self] in
+            DispatchQueue.main.async() {
                 guard let image = UIImage(data: data) else { return }
-                self?.imageScalling(imageSize: size, locationImage: image )
+                self.imageScalling(imageSize: size, locationImage: image )
             }
         }
     }
@@ -56,5 +63,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
 
         self.isLoading(false)
         self.imageCell.image = scaledImage
+        self.buttonStateDelegate?.buttonState(state: true)
+
     }
 }
