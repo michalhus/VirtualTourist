@@ -51,7 +51,8 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         mapView.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        PhotoCollectionViewCell().buttonStateDelegate = self
+//        let cellView = PhotoCollectionViewCell()
+//        cellView.buttonStateDelegate = self
         mapView.addAnnotation(selectedPin)
         loadData()
     }

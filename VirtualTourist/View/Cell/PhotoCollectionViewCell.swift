@@ -16,7 +16,7 @@ protocol newCollectionStateDelegate {
 class PhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageCell: UIImageView!
-    var buttonStateDelegate: newCollectionStateDelegate?
+    var buttonStateDelegate: newCollectionStateDelegate!
     
     var isImageLoaded: Bool = false
     
@@ -27,7 +27,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             DispatchQueue.main.async() {
                 guard let image = UIImage(data: data) else { return }
                 self.imageScalling(imageSize: size, locationImage: image )
-                self.buttonStateDelegate?.buttonState(state: true)
+//                self.buttonStateDelegate?.buttonState(state: true)
             
 
 //                self.isImageLoaded = true
@@ -52,5 +52,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         UIGraphicsEndImageContext()
 
         self.imageCell.image = scaledImage
+        self.buttonStateDelegate.buttonState(state: true)
+
     }
 }

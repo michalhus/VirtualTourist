@@ -16,11 +16,17 @@ extension PhotoAlbumVC : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        let cellView = PhotoCollectionViewCell()
+        cellView.buttonStateDelegate = self
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo Collection View Cell", for: indexPath) as! PhotoCollectionViewCell
         let savedPhoto = self.savedPhotoObjects[(indexPath as NSIndexPath).row]
         if let imageURL = savedPhoto.imageURL, let url = URL(string: imageURL) {
             cell.downloadImage(from: url, size: imageSize)
         }
+        
+
+
 //        PhotoCollectionViewCell.buttonStateDelegate = self
 //        if cell.isImageLoaded {
 //            newCollectionButton.isEnabled = true
