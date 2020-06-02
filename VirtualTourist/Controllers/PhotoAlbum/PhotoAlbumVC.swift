@@ -19,6 +19,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     var selectedPinCoreData: Pin!
     var savedPhotoObjects = [Photo]()
     var fetchedResultsController: NSFetchedResultsController<Photo>!
+    var imageReset: Bool = false
     
     var cellViewSize: CGFloat = 0
     var imageSize: CGSize = CGSize(width: 0, height: 0)
@@ -61,6 +62,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     // MARK: Core Data Fetching
 
     fileprivate func reloadSavedData() -> [Photo]? {
+        self.imageReset = false
         var photos: [Photo] = []
             let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
             let predicate = NSPredicate(format: "pin == %@", argumentArray: [selectedPinCoreData!])
@@ -119,6 +121,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
             DataController.shared.viewContext.delete(photo)
         }
         savedPhotoObjects.removeAll()
+        self.imageReset = true
     }
     
     func deletePicture(index: Int) {
@@ -130,6 +133,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         }
         savedPhotoObjects.remove(at:index)
         loadData()
+        self.imageReset = true
     }
 }
 

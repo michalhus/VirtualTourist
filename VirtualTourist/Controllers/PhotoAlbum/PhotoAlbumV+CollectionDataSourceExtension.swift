@@ -22,6 +22,11 @@ extension PhotoAlbumVC : UICollectionViewDataSource {
         let savedPhoto = self.savedPhotoObjects[(indexPath as NSIndexPath).row]
 
         cell.isLoading(true)
+        
+        if imageReset {
+            cell.imageCell.image = nil
+        }
+                
         if let imageURL = savedPhoto.imageURL, let url = URL(string: imageURL) {
             cell.downloadImage(from: url, size: imageSize)
         }
