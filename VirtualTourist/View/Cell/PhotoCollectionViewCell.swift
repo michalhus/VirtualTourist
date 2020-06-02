@@ -9,15 +9,34 @@
 import Foundation
 import UIKit
 
+protocol newCollectionStateDelegate {
+    func buttonState(state: Bool)
+}
+
 class PhotoCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var imageCell: UIImageView!
+    var buttonStateDelegate: newCollectionStateDelegate?
+    
+    var isImageLoaded: Bool = false
     
     func downloadImage(from url: URL, size: CGSize) {
+//        self.buttonStateDelegate?.buttonState(state: false)
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() { [weak self] in
+            DispatchQueue.main.async() {
                 guard let image = UIImage(data: data) else { return }
-                self?.imageScalling(imageSize: size, locationImage: image )
+                self.imageScalling(imageSize: size, locationImage: image )
+                self.buttonStateDelegate?.buttonState(state: true)
+            
+
+//                self.isImageLoaded = true
+                
+//                if (self?.imageCell.image != nil) {
+//                   PhotoAlbumVC.shared.newCollectionButton.isEnabled = true
+//                    } else {
+//                        PhotoAlbumVC.shared.newCollectionButton.isEnabled = false
+//                    }
             }
         }
     }

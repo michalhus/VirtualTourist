@@ -13,6 +13,8 @@ import CoreData
 
 class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     
+    static let shared = PhotoAlbumVC()
+    
     // MARK: Properties
     
     var selectedPin = MKPointAnnotation()
@@ -32,7 +34,8 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
-
+    @IBOutlet weak var newCollectionButton: UIButton!
+    
     // MARK: Outlets' Actions
 
     @IBAction func newPhotoCollection(_ sender: Any) {
@@ -43,10 +46,12 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     // MARK: Life Cycle
     
     override func viewDidLoad() {
+        newCollectionButton.isEnabled = false
         super.viewDidLoad()
         mapView.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
+        PhotoCollectionViewCell().buttonStateDelegate = self
         mapView.addAnnotation(selectedPin)
         loadData()
     }
@@ -89,6 +94,9 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         if let picFromCoreData = reloadSavedData() {
             savedPhotoObjects = picFromCoreData
             savedPhotoObjects.isEmpty ? getLocationRandomPhotos() : self.collectionView.reloadData()
+            
+//            THIS might be in if statement or not here at all
+//            newCollectionButton.isEnabled = true
         }
     }
     
@@ -120,6 +128,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     }
     
     func deletePicture(index: Int) {
+        newCollectionButton.isEnabled = false
         for (id, photo) in savedPhotoObjects.enumerated() {
             if ( id == index ) {
                 DataController.shared.viewContext.delete(photo)
@@ -127,5 +136,15 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         }
         savedPhotoObjects.remove(at:index)
         loadData()
+    }
+}
+
+extension PhotoAlbumVC: newCollectionStateDelegate {
+    func buttonState(state: Bool) {
+        if state {
+            newCollectionButton.isEnabled = true
+        }else {
+            newCollectionButton.isEnabled = false
+        }
     }
 }
