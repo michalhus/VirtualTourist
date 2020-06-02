@@ -12,9 +12,7 @@ import MapKit
 import CoreData
 
 class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
-    
-    static let shared = PhotoAlbumVC()
-    
+        
     // MARK: Properties
     
     var selectedPin = MKPointAnnotation()
@@ -51,8 +49,6 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         mapView.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-//        let cellView = PhotoCollectionViewCell()
-//        cellView.buttonStateDelegate = self
         mapView.addAnnotation(selectedPin)
         loadData()
     }
@@ -95,9 +91,6 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         if let picFromCoreData = reloadSavedData() {
             savedPhotoObjects = picFromCoreData
             savedPhotoObjects.isEmpty ? getLocationRandomPhotos() : self.collectionView.reloadData()
-            
-//            THIS might be in if statement or not here at all
-//            newCollectionButton.isEnabled = true
         }
     }
     
@@ -140,7 +133,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     }
 }
 
-extension PhotoAlbumVC: newCollectionStateDelegate {
+extension PhotoAlbumVC: NewCollectionStateDelegate {
     func buttonState(state: Bool) {
         if state {
             newCollectionButton.isEnabled = true
