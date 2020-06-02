@@ -10,14 +10,27 @@ import Foundation
 import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var imageCell: UIImageView!
+    
+    var loadingIndicator = UIActivityIndicatorView()
+
+    func activityIndicator() {
+        loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.center = self.imageCell.center
+        self.imageCell.addSubview(loadingIndicator)
+    }
     
     func isLoading(_ indicator: Bool) {
 
         if indicator {
-            print("Laoding Indicator")
+            self.activityIndicator()
+            loadingIndicator.startAnimating()
+            loadingIndicator.backgroundColor = .white
         } else {
-            print("Image Loaded")
+            loadingIndicator.stopAnimating()
+            loadingIndicator.hidesWhenStopped = true
         }
     }
     
