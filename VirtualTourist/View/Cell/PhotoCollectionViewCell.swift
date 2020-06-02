@@ -35,17 +35,21 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             self.activityIndicator()
             loadingIndicator.startAnimating()
             loadingIndicator.backgroundColor = .white
+            self.buttonStateDelegate?.buttonState(state: false)
         } else {
             loadingIndicator.stopAnimating()
             loadingIndicator.hidesWhenStopped = true
+            self.buttonStateDelegate?.buttonState(state: true)
         }
     }
     
     func downloadImage(from url: URL, size: CGSize) {
+        
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
             DispatchQueue.main.async() {
                 guard let image = UIImage(data: data) else { return }
+                self.buttonStateDelegate?.buttonState(state: false)
                 self.imageScalling(imageSize: size, locationImage: image )
             }
         }
@@ -63,7 +67,5 @@ class PhotoCollectionViewCell: UICollectionViewCell {
 
         self.isLoading(false)
         self.imageCell.image = scaledImage
-        self.buttonStateDelegate?.buttonState(state: true)
-
     }
 }
