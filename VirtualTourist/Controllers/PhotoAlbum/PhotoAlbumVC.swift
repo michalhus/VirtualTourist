@@ -120,6 +120,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     func deleteAllData() {
         for photo in savedPhotoObjects {
             DataController.shared.viewContext.delete(photo)
+            DataController.shared.saveContext()
         }
         savedPhotoObjects.removeAll()
         self.imageReset = true
@@ -130,6 +131,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
         for (id, photo) in savedPhotoObjects.enumerated() {
             if ( id == index ) {
                 DataController.shared.viewContext.delete(photo)
+                DataController.shared.saveContext()
             }
         }
         savedPhotoObjects.remove(at:index)
