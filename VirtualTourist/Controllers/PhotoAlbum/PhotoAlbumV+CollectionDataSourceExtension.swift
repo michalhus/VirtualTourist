@@ -30,7 +30,7 @@ extension PhotoAlbumVC : UICollectionViewDataSource {
         if let imageURL = savedPhoto.imageURL, let url = URL(string: imageURL) {
             cell.downloadImage(from: url, size: imageSize)
         }
-
+        
         return cell
     }
     

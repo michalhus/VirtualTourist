@@ -20,6 +20,7 @@ class PhotoAlbumVC: UIViewController, NSFetchedResultsControllerDelegate {
     var savedPhotoObjects = [Photo]()
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     var imageReset: Bool = false
+    var imageLoadingCounter: Int = 0
     
     var cellViewSize: CGFloat = 0
     var imageSize: CGSize = CGSize(width: 0, height: 0)
@@ -144,5 +145,9 @@ extension PhotoAlbumVC: NewCollectionStateDelegate {
         }else {
             newCollectionButton.isEnabled = false
         }
+    }
+    
+    func loadedCounter() {
+        imageLoadingCounter += 1
     }
 }

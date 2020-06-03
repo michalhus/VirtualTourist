@@ -11,6 +11,7 @@ import UIKit
 
 protocol NewCollectionStateDelegate: class {
     func buttonState(state: Bool)
+    func loadedCounter()
 }
 
 class PhotoCollectionViewCell: UICollectionViewCell {
@@ -51,20 +52,15 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         let downloadPicTask = session.dataTask(with: url) { (data, response, error) in
             // The download has finished.
             if let e = error {
-                print("Error downloading cat picture: \(e)")
+                print("Error downloading a picture: \(e)")
             } else {
-                // No errors found.
-                // It would be weird if we didn't have a response, so check for that too.
                 if let res = response as? HTTPURLResponse {
                     print("Downloaded picture with response code \(res.statusCode)")
                     if let imageData = data {
-                        // Finally convert that Data into an image and do what you wish with it.
                         DispatchQueue.main.async() {
                             guard let image = UIImage(data: imageData) else { return }
-                            self.buttonStateDelegate?.buttonState(state: false)
                             self.imageScalling(imageSize: size, locationImage: image )
                         }
-                        // Do something with your image.
                     } else {
                         print("Couldn't get image: Image is nil")
                     }
@@ -77,12 +73,16 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func imageScalling(imageSize: CGSize, locationImage: UIImage) {
+        
+        self.buttonStateDelegate?.buttonState(state: false)
+        
         UIGraphicsBeginImageContextWithOptions(imageSize, false, 0.0)
         locationImage.draw(in: CGRect(origin: CGPoint.zero, size: imageSize))
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         self.isLoading(false)
+        self.buttonStateDelegate?.loadedCounter()
         self.imageCell.image = scaledImage
     }
 }
